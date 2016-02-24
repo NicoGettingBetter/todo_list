@@ -1,0 +1,27 @@
+<div class="list">
+	<div class="list_name">
+		<%= image_tag('icon.png', size: '20x20') + " " + list.name %>
+		<%= link_to image_tag('delete.png', size: '20x20'), list, method: :delete, data: { confirm: "Are you sure?"}, id: list.id %>
+	</div>
+	<div class="new_task">
+		<%= form_for list.tasks.new do |f| %>
+			<%= f.hidden_field :list_id, value: list.id %>
+			<%= f.select :priority, 1..(list.tasks.count + 1) %>
+			<%= f.text_field :name, size: '35x20'%>
+			<%= f.datetime_select :deadline %>
+			<button type = 'submit' class = 'btn'>Add Task</button>
+		<% end %>
+	</div>
+	<table class = "task_table">
+		<% unless list.tasks.empty? %>
+			<tr>
+				<th class="list_header_status"></th>
+				<th class="list_header_task">Task</th>
+				<th class="list_header_deadline">Deadline</th>
+			</tr>
+		<% end %>
+		<% @edit_flag = flash[:edit] || nil %>
+		<% tasks = list.tasks.order(:priority) %>
+		<%= render partial: "task", collection: tasks, as: :task %>
+	</table>
+</div>

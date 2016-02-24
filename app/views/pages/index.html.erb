@@ -1,0 +1,12 @@
+<div class="page_container">
+
+	<%= render partial: "list", collection: @lists, as: :list %>
+
+	<div class="new_list">
+		<%= form_for current_user.lists.new do |f| %>
+			<%= f.text_field :name %>
+			<button type = "submit" class = "btn">Add TODO list</button>
+		<% end %>
+	</div>
+
+</div>
