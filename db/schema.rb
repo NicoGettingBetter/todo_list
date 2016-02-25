@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 20160219175056) do
     t.datetime "updated_at",                 null: false
   end
 
-  add_index "tasks", ["priority"], name: "index_tasks_on_priority", unique: true, using: :btree
+  add_index "tasks", ["priority"], name: "index_tasks_on_priority", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false

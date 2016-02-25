@@ -24,17 +24,9 @@ class TasksController < ApplicationController
     redirect_to root_path
   end
 
-  def edit
-    flash[:edit] = params[:id]
-    redirect_to root_path
-  end
-
   def update
-    temp_task = Task.new params[:name]#, :deadline, :status)
     @task = Task.find params[:id]
-
-    debugger
-    @task.save
+    @task.update params.require(:task).permit(:status, :name, :deadline)
     redirect_to root_path    
   end
 end

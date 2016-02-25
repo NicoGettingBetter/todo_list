@@ -1,0 +1,188 @@
+<div class="queries">
+	<h2 class = "header">Queries</h2>
+	<h6 class = "header"><%= link_to "<<Back to TODO list", {action: 'index'} %></h6>
+	<p>1. get all statuses, not repeating, alphabetically ordered</p>
+	<% tasks = [] %>
+	<div class = "result">
+		<ul>
+			<% Task.all.select{ |t| List.find(t.list_id).user_id == current_user.id }.select{|t| t.status }.sort{|x, y| x.name <=> y.name}.each do |task| %>
+				<% repeated = false %>
+				<% tasks.each do |temp| %>
+					<% if temp == task.name %>
+						<% repeated = true %>
+					<% end %>
+				<% end %>
+				<% unless repeated %>
+					<% tasks << task.name %>
+				<% end %>
+			<% end %>
+			<% if tasks.empty? %>
+				<%= "no one match" %>
+			<% end %>
+			<% tasks.each do |task| %>
+				<li><%= task %></li>
+			<% end %>
+		</ul>
+	</div>
+	<br/>
+
+	<p>2. get the count of all tasks in each project, order by tasks count descending</p>
+	<% tasks_count = [] %>
+	<% hash = Hash.new(0) %>
+	<div class = "result">
+		<ul>
+			<% counts = [] %>
+			<% current_user.lists.each do |list| %>
+				<% hash[list.name] = list.tasks.count %>
+				<% counts << list.tasks.count %>
+			<% end %>
+			<% temp_hash = Hash.new(0) %>
+			<% counts.each do |count| %>
+				<% temp_hash[count] = 1 %>
+			<% end %>
+			<% counts = temp_hash.keys.sort.reverse %>
+			<% counts.each do |count| %>
+				<% hash.keys.each do |key| %>
+					<% if hash[key] == count %>
+						<% tasks_count << "#{count} : #{key}" %>
+					<% end %>
+				<% end %>
+			<% end %>
+			<% if tasks_count.empty? %>
+				<%= "no one match" %>
+			<% end %>
+			<% tasks_count.each do |task| %>
+				<li><%= task %></li>
+			<% end %>
+		</ul>
+	</div>
+	<br/>
+
+	<p>3. get the count of all tasks in each project, order by projects names</p><br/>
+	<% tasks_count = [] %>
+	<div class = "result">
+		<ul>
+			<% current_user.lists.sort{|x, y| x.name.upcase <=> y.name.upcase }.each do |list| %>
+				<% tasks_count << ("#{list.tasks.count} : #{list.name}") %>
+			<% end %>			
+			<% if tasks.empty? %>
+				<%= "no one match" %>
+			<% end %>
+			<% tasks_count.each do |task| %>
+				<li><%= task %></li>
+			<% end %>
+		</ul>
+	</div>
+	<br/>
+
+	<p>4. get the tasks for all projects having the name beginning with “N” letter</p>
+	<% tasks = [] %>
+	<div class = "result">
+		<ul>
+			<% current_user.lists.select{|x| x.name[0] == 'N' }.each do |list| %>
+				<% list.tasks.each do |task| %>			
+					<% tasks << ("#{list.name} : #{task.name}") %>
+				<% end %>
+			<% end %>
+			<% if tasks.empty? %>
+				<%= "no one match" %>
+			<% end %>
+			<% tasks.each do |list| %>
+				<li><%= list %></li>
+			<% end %>
+		</ul>
+	</div>
+	<br/>
+
+	<p>5. get the list of all projects containing the ‘a’ letter in the middle of the name, and show the tasks count near each project. Mention that there can exist projects without tasks and tasks with project_id=NULL</p>
+	<div class = "result">
+		<ul>
+			<% lists = current_user.lists.select{ |l| l.name.include? 'a' } || [] %>
+			<% if lists.empty? %>
+				<%= "no one match" %>
+			<% end %>
+			<% lists.each do |list| %>
+				<li><%= "#{list.tasks.count} : #{list.name}" %></li>
+			<% end %>
+		</ul>
+	</div>
+	<br/>
+
+	<p>6. get the list of tasks with duplicate names. Order alphabetically</p>
+	<% tasks = Task.all.select{ |t| List.find(t.list_id).user_id == current_user.id } || [] %>
+	<% hash = Hash.new(0) %>
+	<div class = "result">
+		<ul>
+			<% tasks.each do |task| %>
+				<% hash[task.name] += 1 %>
+			<% end %>
+			<% result_tasks = [] %>
+			<% hash.each do |k, v| %>
+				<% if v > 1 %>
+					<% result_tasks << k %>
+				<% end %>
+			<% end %>
+			<% if result_tasks.empty? %>
+				<%= "no one match" %>
+			<% end %>
+			<% result_tasks.sort.each do |task| %>
+				<li><%= task %></li>
+			<% end %>
+		</ul>
+	</div>
+	<br/>
+
+	<p>7. get the list of tasks having several exact matches of both name and status, from	the project ‘Garage’. Order by matches count</p>
+	<div class = "result">
+		<ul>
+			<% all_tasks = [] %>
+			<% if current_user.lists.find_by_name('Garage') %>
+				<% all_tasks = current_user.lists.find_by_name('Garage').tasks %>
+			<% end %>
+			<% tasks = [] %>
+			<% hash = Hash.new('') %>
+			<% all_tasks.each do |task| %>
+				<% if task.status %>
+					<% hash[task.name] += '1' %>
+				<% else %>
+					<% hash[task.name] += '0' %>
+				<% end %>
+			<% end %>
+			<% hash.each do |k, v| %>
+				<% if v.count('1') > 1 || v.count('0') > 1 %>
+					<% tasks << k %>
+				<% end %>
+			<% end %>
+			<% if tasks.empty? %>
+				<%= "no one match" %>
+			<% end %>
+			<% tasks.each do |task| %>
+				<li><%= task %></li>
+			<% end %>
+		</ul>
+	</div>
+	<br/>
+
+	<p>8. get the list of project names having more than 10 tasks in status ‘completed’. Order	by project_id</p>
+	<% lists = [] %>
+	<div class = "result">
+		<ul>
+			<% current_user.lists.each do |list| %>
+				<% count = 0 %>
+				<% list.tasks.select{|t| t.status }.each do |task| %>			
+					<% count += 1 %>
+				<% end %>
+				<% if count > 10 %>
+					<% lists << list.name %>
+				<% end %>
+			<% end %>
+			<% if lists.empty? %>
+				<%= "no one match" %>
+			<% end %>			
+			<% lists.each do |list| %>
+				<li><%= list %></li>
+			<% end %>
+		</ul>
+	</div>
+	<br/>
+</div>

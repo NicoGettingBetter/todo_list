@@ -3,37 +3,87 @@
 
 html, body {
   @include make-xs-column(12, 0);
-  height: 100%;
+  font-family: monospace;
+  min-height: 100%;
 }
 
 body {
-  @include gradient-vertical(#D7D4BD, #B35D0A);
+  @include gradient-vertical(#E7D4BD, #B36D1A);
+}
+
+.header {
+  text-align: center;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
 }
 
 .page_container {
-  max-width: 800px;
-  width: 100%;
+  width: 1200px;
   margin: 0 auto;
 }
 
 .new_list {
   text-align: center;
+  width: 600px;
+  background-color: #C0C0C0;
+  margin: 0 auto;
+  margin-bottom: 15px;
+  padding: 5px 15px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border: 1px solid #777;
 }
 
 .list {
-    margin-bottom: 15px;
-    background: #FFF;
-    padding: 0px 15px 15px 15px;
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
-    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+  background: #FFF;
+  padding: 0px 15px 15px 15px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  border: 1px solid #777;
+}
+
+.input_list {
+  border: 0px;
+  background: transparent;
+  width: 94%;
+}
+
+.input_with_border_list {
+  width: 400px;
+  border: 0px;
+  box-shadow: 2px;
+  border-radius: 5px;
+  height: 30px;
+}
+
+.input_task {
+  border: 0px;
+  background: transparent;
+  width: 100%;
+}
+
+.input_with_border_task {
+  width: 660px;
+  border: 0px;
+  box-shadow: 2px;
+  border-radius: 5px;
+  height: 30px;
 }
 
 .list_name {
   margin: 0 -15px;
   padding: 10px 15px;
   color: white;
-  @include gradient-vertical(#5080BE, #3960A0);
+  @include gradient-vertical(#7080BE, #5060A0);
   font-size: 18px;
 }
 
@@ -53,35 +103,45 @@ body {
 }
 
 .task_table {
-  max-width: 770px;
-  width: 100%;  
+  width: 1170px; 
+  box-sizing: border-box;
 }
 
-.list_header_status {
+.list_header_icon {
   text-align: center;
+  width: 25px;
 }
 
 .list_header_task {
   text-align: center;
-  width: 420px;
+  width: 800px;
 }
 
 .list_header_deadline {
   text-align: center;
-  width: 200px;
+  width: 390px;
 }
 
 .new_task {
   vertical-align: center;
-  padding: 10px, 10px, 10px, 10px;
-}
-
-.delete_list_btn {
-  text-align: right;
+  background-color: #C0C0C0;
+  margin: 0 -15px;
+  padding: 5px 15px;
+  line-height: 30px;
 }
 
 .btn {
+  border: none;
   color: white;
-  @include gradient-vertical(#5080BE, #3960A0);
+  @include gradient-vertical(#7080BE, #5060A0);
   font-size: 15px;
+  height: 30px;
+}
+
+.result {
+  background: white;
+  width: 80%;
+  margin: 0 auto;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }

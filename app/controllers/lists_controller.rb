@@ -14,4 +14,10 @@ class ListsController < ApplicationController
   	list.destroy
   	redirect_to root_path
   end
+
+  def update
+    @list = List.find params[:id]
+    @list.update params.require(:list).permit(:name)
+    redirect_to root_path   
+  end
 end

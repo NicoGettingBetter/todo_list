@@ -1,23 +1,28 @@
 <div class="list">
 	<div class="list_name">
-		<%= image_tag('icon.png', size: '20x20') + " " + list.name %>
-		<%= link_to image_tag('delete.png', size: '20x20'), list, method: :delete, data: { confirm: "Are you sure?"}, id: list.id %>
+		<%= form_for list do |f| %>			
+			<%= image_tag('icon.png', size: '20x20') %>
+			<%= f.text_field :name, value: list.name, class: "input_list" %>
+			<%= link_to image_tag('delete.png', size: '20x20'), list, method: :delete, data: { confirm: "Are you sure?"}, id: list.id, class: "right" %>
+		<% end %>
 	</div>
 	<div class="new_task">
 		<%= form_for list.tasks.new do |f| %>
 			<%= f.hidden_field :list_id, value: list.id %>
-			<%= f.select :priority, 1..(list.tasks.count + 1) %>
-			<%= f.text_field :name, size: '35x20'%>
-			<%= f.datetime_select :deadline %>
+			<%= f.select :priority, 1..(list.tasks.count + 1), class: "combo_box" %>
+			<%= f.text_field :name, size: '35x20', class: "input_with_border_task" %>
+			<%= f.datetime_select :deadline, class: "combo_box" %>
 			<button type = 'submit' class = 'btn'>Add Task</button>
 		<% end %>
 	</div>
 	<table class = "task_table">
 		<% unless list.tasks.empty? %>
 			<tr>
-				<th class="list_header_status"></th>
+				<th class="list_header_icon"></th>
 				<th class="list_header_task">Task</th>
 				<th class="list_header_deadline">Deadline</th>
+				<th class="list_header_icon"></th>
+				<th class="list_header_icon"></th>
 			</tr>
 		<% end %>
 		<% @edit_flag = flash[:edit] || nil %>

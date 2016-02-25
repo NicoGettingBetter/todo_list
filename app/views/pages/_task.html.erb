@@ -1,16 +1,9 @@
 <tr>
-	<%= form_for :task do |f| %>
-		<td class="list_check_box"><%= f.check_box :status %></td>
-		<% if @edit_flag && Task.find(@edit_flag) == task %>
-			<td><%#= f.select :priority, 1..(List.find task.list_id).tasks.count, value: task.priority %>
-			<%= f.text_field :name, value: task.name, size: '45x40' %></td>
-			<td><%= f.datetime_select :deadline, value: task.deadline %></td>
-			<td><%= link_to image_tag('ok.png', size: '15x15'), task, method: :patch, id: task.id, name: task.name %></td>
-		<% else %>
-			<td><%= task.name %></td>
-			<td><%= task.deadline %></td>
-			<td><%= link_to image_tag('edit.png', size: '15x15'), edit_task_path(task.id) %></td>
-		<% end %>
+	<%= form_for task do |f| %>
+		<td><%= f.check_box :status %></td>
+		<td><%= f.text_field :name, value: task.name, class: "input_task" %></td>
+		<td><%= f.datetime_select :deadline, value: task.deadline %></td>
+		<td><%= image_tag('edit.png', size: '15x15') %></td>
 		<td><%= link_to image_tag('delete.png', size: '15x15'), task_path(task.id), method: :delete, data: { confirm: 'Are you sure?' } %></td>
 	<% end %>
 </tr>

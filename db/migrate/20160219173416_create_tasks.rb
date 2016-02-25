@@ -9,6 +9,6 @@ class CreateTasks < ActiveRecord::Migration
 
       	t.timestamps null: false
     end
-    add_index 'tasks', 'priority', unique: true
+    add_index 'tasks', 'priority'
   end
 end
